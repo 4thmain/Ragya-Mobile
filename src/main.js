@@ -6,29 +6,42 @@ var{
   StyleSheet,
   Text,
   View,
+  TouchableHighlight
 } = React;
-
+var Rooturl = "https://spreadsheets.google.com/feeds/list/1HEeeGZbC-DHkTkjwQLzaoIDUy5lRAVap8IrlqLF-4ds/od6/public/values?alt=json";
+var prahar = (((new Date()).getHours)/2);
 
 module.exports = React.createClass({
+getInitialState: function() {
+  return {
+    videoId: 'VyqIyVhHCNo',
+    prahar: prahar,
+  }
+},
 render: function() {
   return (
     <View>
+    <Text>{this.state.prahar}</Text>
     <YouTube
         ref="youtubePlayer"
-        videoId="VyqIyVhHCNo" // The YouTube video ID
+        videoId = {this.state.videoId} // The YouTube video ID
         play={true}           // control playback of video with true/false
-        hidden={false}        // control visiblity of the entire view
+        hidden={true}        // control visiblity of the entire view
         playsInline={true}    // control whether the video should play inline
-
-        onReady={(e)=>{this.setState({isReady: true})}}
-        onChangeState={(e)=>{this.setState({status: e.state})}}
-        onChangeQuality={(e)=>{this.setState({quality: e.quality})}}
-        onError={(e)=>{this.setState({error: e.error})}}
-        onProgress={(e)=>{this.setState({currentTime: e.currentTime, duration: e.duration})}}
-
         style={{alignSelf: 'stretch', height: 300, backgroundColor: 'black', marginVertical: 10}}
         />
+      <TouchableHighlight onPress={this._handlePress}>
+        <Text>Next</Text>
+      </TouchableHighlight>
     </View>
   );
-}
+},
+_handlePress: function() {
+  fetch(Rooturl)
+    .then((response) => response.json())
+      .then((responseText) => {
+        this.setState({videoId: responseText.feed.entry[0].gsx$videoid.$t});
+        console.log(responseText.feed.entry[0].gsx$videoid.$t);
+      });
+  },
 });

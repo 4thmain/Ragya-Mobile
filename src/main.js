@@ -9,7 +9,8 @@ var{
   TouchableHighlight
 } = React;
 var Rooturl = "https://spreadsheets.google.com/feeds/list/1HEeeGZbC-DHkTkjwQLzaoIDUy5lRAVap8IrlqLF-4ds/od6/public/values?alt=json";
-var prahar = (((new Date()).getHours)/2);
+var now = new Date();
+var prahar = (now.getHours())/2;
 
 module.exports = React.createClass({
 getInitialState: function() {
@@ -21,18 +22,18 @@ getInitialState: function() {
 render: function() {
   return (
     <View>
-    <Text>{this.state.prahar}</Text>
     <YouTube
         ref="youtubePlayer"
         videoId = {this.state.videoId} // The YouTube video ID
-        play={true}           // control playback of video with true/false
-        hidden={true}        // control visiblity of the entire view
+        play={false}           // control playback of video with true/false
+        hidden={false}        // control visiblity of the entire view
         playsInline={true}    // control whether the video should play inline
         style={{alignSelf: 'stretch', height: 300, backgroundColor: 'black', marginVertical: 10}}
         />
       <TouchableHighlight onPress={this._handlePress}>
         <Text>Next</Text>
       </TouchableHighlight>
+      <Text>{this.state.prahar}</Text>
     </View>
   );
 },

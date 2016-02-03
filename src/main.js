@@ -8,14 +8,54 @@ var{
   View,
   TouchableHighlight
 } = React;
-var Rooturl = "https://spreadsheets.google.com/feeds/list/1HEeeGZbC-DHkTkjwQLzaoIDUy5lRAVap8IrlqLF-4ds/od6/public/values?alt=json";
+var Rooturl = "https://spreadsheets.google.com/feeds/list/1HEeeGZbC-DHkTkjwQLzaoIDUy5lRAVap8IrlqLF-4ds/";
+
+function getPrahar(hour) {
+  var temp = 0;
+  switch (true) {
+    case((hour >= 1) && (hour < 4)):
+    temp = 1;
+    break;
+    case((hour >= 4) && (hour < 7)):
+    temp = 2;
+    break;
+    case((hour >= 7) && (hour < 10)):
+    temp = 3;
+    break;
+    case((hour >= 10) && (hour < 13)):
+    temp = 4;
+    break;
+    case((hour >= 13) && (hour < 16)):
+    temp = 5;
+    break;
+    case((hour >= 16) && (hour < 19)):
+    temp = 6;
+    break;
+    case((hour >= 19) && (hour < 22)):
+    temp = 7;
+    break;
+    case(((hour >= 22) && (hour < 24)) || (hour == 0)):
+    temp = 8;
+    break;
+    default:
+    console.log('error');
+  }
+  return temp;
+};
+
 var now = new Date();
-var prahar = (now.getHours())/2;
+var hour = now.getHours();
+var prahar = getPrahar(parseInt(hour));
+
+//var prahar = (now.getHours())/2;
 
 module.exports = React.createClass({
 getInitialState: function() {
   return {
     videoId: 'VyqIyVhHCNo',
+    artistName: '',
+    praharName: '',
+    ragaName: '',
     prahar: prahar,
   }
 },
@@ -28,21 +68,29 @@ render: function() {
         play={false}           // control playback of video with true/false
         hidden={false}        // control visiblity of the entire view
         playsInline={true}    // control whether the video should play inline
-        style={{alignSelf: 'stretch', height: 300, backgroundColor: 'black', marginVertical: 10}}
+        style={{alignSelf: 'stretch', height: 100, backgroundColor: 'black', marginVertical: 10}}
         />
       <TouchableHighlight onPress={this._handlePress}>
         <Text>Next</Text>
       </TouchableHighlight>
       <Text>{this.state.prahar}</Text>
+      <Text>{this.state.artistName}</Text>
+      <Text>{this.state.praharName}</Text>
+      <Text>{this.state.ragaName}</Text>
     </View>
   );
 },
 _handlePress: function() {
-  fetch(Rooturl)
+  var url = Rooturl + prahar + "/public/values?alt=json"
+  fetch(url)
     .then((response) => response.json())
       .then((responseText) => {
-        this.setState({videoId: responseText.feed.entry[0].gsx$videoid.$t});
+        this.setState({videoId: responseText.feed.entry[0].gsx$videoid.$t,
+                      artistName:responseText.feed.entry[0].gsx$artist.$t,
+                      praharName:responseText.feed.entry[0].gsx$prahar.$t,
+                      ragaName:responseText.feed.entry[0].gsx$raga.$t});
         console.log(responseText.feed.entry[0].gsx$videoid.$t);
+        console.log(prahar);
       });
   },
 });

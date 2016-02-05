@@ -14,28 +14,28 @@ function getPrahar(hour) {
   var temp = 0;
   switch (true) {
     case((hour >= 1) && (hour < 4)):
-    temp = 1;
-    break;
-    case((hour >= 4) && (hour < 7)):
-    temp = 2;
-    break;
-    case((hour >= 7) && (hour < 10)):
-    temp = 3;
-    break;
-    case((hour >= 10) && (hour < 13)):
-    temp = 4;
-    break;
-    case((hour >= 13) && (hour < 16)):
-    temp = 5;
-    break;
-    case((hour >= 16) && (hour < 19)):
-    temp = 6;
-    break;
-    case((hour >= 19) && (hour < 22)):
     temp = 7;
     break;
-    case(((hour >= 22) && (hour < 24)) || (hour == 0)):
+    case((hour >= 4) && (hour < 7)):
     temp = 8;
+    break;
+    case((hour >= 7) && (hour < 10)):
+    temp = 1;
+    break;
+    case((hour >= 10) && (hour < 13)):
+    temp = 2;
+    break;
+    case((hour >= 13) && (hour < 16)):
+    temp = 3;
+    break;
+    case((hour >= 16) && (hour < 19)):
+    temp = 4;
+    break;
+    case((hour >= 19) && (hour < 22)):
+    temp = 5;
+    break;
+    case(((hour >= 22) && (hour < 24)) || (hour == 0)):
+    temp = 6;
     break;
     default:
     console.log('error');
@@ -81,16 +81,15 @@ render: function() {
   );
 },
 _handlePress: function() {
+  var i = parseInt((Math.random()) * 10);
   var url = Rooturl + prahar + "/public/values?alt=json"
   fetch(url)
     .then((response) => response.json())
       .then((responseText) => {
-        this.setState({videoId: responseText.feed.entry[0].gsx$videoid.$t,
-                      artistName:responseText.feed.entry[0].gsx$artist.$t,
-                      praharName:responseText.feed.entry[0].gsx$prahar.$t,
-                      ragaName:responseText.feed.entry[0].gsx$raga.$t});
-        console.log(responseText.feed.entry[0].gsx$videoid.$t);
-        console.log(prahar);
+        this.setState({videoId: responseText.feed.entry[i].gsx$videoid.$t,
+                      artistName:responseText.feed.entry[i].gsx$artist.$t,
+                      praharName:responseText.feed.entry[i].gsx$prahar.$t,
+                      ragaName:responseText.feed.entry[i].gsx$raga.$t});
       });
   },
 });

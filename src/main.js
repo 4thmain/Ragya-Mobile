@@ -59,6 +59,9 @@ getInitialState: function() {
     prahar: prahar,
   }
 },
+componentDidMount: function() {
+  this._handlePress();
+},
 render: function() {
   return (
     <View>
@@ -68,7 +71,7 @@ render: function() {
         play={false}           // control playback of video with true/false
         hidden={false}        // control visiblity of the entire view
         playsInline={true}    // control whether the video should play inline
-        style={{alignSelf: 'stretch', height: 100, backgroundColor: 'black', marginVertical: 10}}
+        style={{alignSelf: 'stretch', height: 100, backgroundColor: 'white', marginVertical: 10}}
         />
       <TouchableHighlight onPress={this._handlePress}>
         <Text>Next</Text>
